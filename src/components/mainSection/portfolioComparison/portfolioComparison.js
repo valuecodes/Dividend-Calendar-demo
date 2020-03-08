@@ -1,8 +1,6 @@
 import React, { Component } from 'react'
 import { Bar } from 'react-chartjs-2';
 import 'chartjs-plugin-datalabels';
-import { CONNREFUSED } from 'dns';
-import { element } from 'prop-types';
 
 export class PortfolioComparison extends Component {
     constructor() {
