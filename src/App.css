@@ -1,0 +1,694 @@
+/* App header */
+.App-header{
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Header */
+#mainHeader{
+  text-align: center;
+  margin: 10px;
+}
+
+/* Navigation bar */
+.navBar{
+  background-color: rgb(182, 196, 212);
+  width: 100%;
+  height: 35px;
+  display: grid;
+  grid-template-columns: 1fr 300px 1fr;
+}
+
+/* Buttons */
+.buttons{
+  display: grid;
+  grid-template-columns: repeat(4,1fr);
+  padding-left: 200px;
+  padding-right: 10px;
+}
+
+.navButton{
+  border: none;
+  border-left: 2px solid black;
+}
+
+.navButton{
+  transition-duration: 0.2s;
+}
+
+.navButton:hover {
+  background-color: rgb(76, 116, 175);
+  color: white;
+  cursor: pointer;
+}
+
+#navButtonLast{
+  border-right: 2px solid black;
+}
+
+/* Search */
+.search{
+  background-color: rgb(247, 247, 247);
+  border: 3px solid black;
+  border-radius: 5px;
+  height: 29px;
+}
+
+.searchBox{
+  width: 1fr; 
+  font-size: 20px;
+  padding-top: 3px;
+  padding-left: 5px;
+  border: none;
+  background-color: rgb(247, 247, 247);
+}
+
+.searchBox:focus{
+  outline: none;
+}
+
+.results{
+  position: absolute;
+  height: 100px;
+  width: 300px;
+}
+
+.searchResult{
+  display: grid;
+  grid-template-columns: 1fr 3fr;
+  height: 50px;
+  border: 1px solid black;
+  padding-left: 5px;
+}
+
+/* Stats */
+.stats{
+  font-size: 30px;
+  padding-left: 30px;
+}
+
+/* Main section */
+.mainSection{
+  margin-top: 20px;
+  display: grid;
+  grid-template-columns: 200px 1fr;
+}
+
+/* Main list */
+.mainList{
+  height: 400px;
+  width: 200px;
+  /* background-color: aquamarine; */
+}
+
+/* Portfolios */
+.portfolios{
+  background-color:  rgb(182, 196, 212);
+  height: 59px;
+  display: grid;
+  grid-template-columns: 1fr 60px;
+  border-bottom: 3px solid black;
+}
+
+.portfolioButtons{
+  display: grid;
+  grid-template-rows: 1fr 1fr;
+  height: 20px;
+  border: none;
+}
+
+.selectedPortfolio{
+  padding: 0px;
+  margin:0px;
+  padding-top: 15px;
+}
+
+/* AddNew */
+.addNewPortfolio{
+  display: grid;
+  grid-template-columns: 1fr 50px;
+  position: absolute;
+  background-color: rgb(80, 80, 80);
+  height: 42px;
+  margin-left: -150px;
+  width: 150px;
+}
+
+.newPortfolio{
+  height: 36px;
+  width: 150px;
+}
+
+.allPortfolios{
+  position:absolute;
+  background-color:rgb(145, 217, 241);
+  margin-top: 42px;
+  width: 200px;
+}
+
+.portfolioList{
+  border: 3px solid black;
+  height: 60px;
+  margin: 0px;
+  padding: 0px;
+}
+
+.deletePortButton{
+  position: absolute;
+  z-index: 20;
+}
+
+.portfolioButtons{
+    /* height: 30px; */
+}
+
+.portfolioButton{
+  border: none;
+  border-bottom: 1px solid black;
+  width: 100%;
+  height:20px;
+}
+
+.portfolioButton:hover {
+  background-color: rgb(76, 116, 175);
+  color: white;
+  cursor: pointer;
+}
+
+/* Ticker List */
+#tickerList{
+  height: 288px;
+  overflow: auto;
+  background-color: rgba(166, 201, 224, 0.438);
+  border-bottom: 3px solid black;
+}
+
+#tickerList::-webkit-scrollbar{
+  width: 10px;
+}
+
+#tickerList::-webkit-scrollbar-track {
+  background : #858585;
+  border-radius: 10px;
+}
+
+#tickerList::-webkit-scrollbar-track {
+  background : rgba(255,255,255,0.5);
+  border-radius: 10px;
+  box-shadow:  0 0 6px rgba(0, 0, 0, 0.5);
+  z-index: 20;
+}
+
+#tickerList::-webkit-scrollbar-thumb {
+  background: #888; 
+}
+
+
+/* Ticker info */
+.tickerInfo{
+  display: grid;
+  grid-template-columns: 1fr 2fr 40px 20px;
+  height: 28px;
+}
+
+.delTicker{
+  background-color: rgb(243, 141, 163);
+  border: none;
+  border-bottom: 1px solid black;
+}
+
+.delTicker:hover {
+  background-color: rgb(211, 13, 13);
+  color: white;
+  cursor: pointer;
+}
+
+.inputTicker{
+  border: none;
+  border-bottom: 1px solid black;
+}
+
+.infoName{
+  padding: 0px;
+  padding-top: 3px;
+  margin: 0px;
+  width: 60px;
+  border: none;
+  border-bottom: 1px solid black;
+}
+
+
+.infoName:hover {
+  background-color: #4CAF50;
+  color: white;
+  cursor: pointer;
+}
+
+.shareCount{
+  width: 100%;
+  /* height: 28px; */
+  border: none;
+  border-bottom: 1px solid black;
+}
+
+.count{
+  padding: 0px;
+  padding-top: 3px;
+  margin: 0px;
+  text-align: center;
+}
+
+/* Calender */
+.calender{
+  width: 1fr;
+  height: 400px;
+  margin-right: 200px;
+  background-color: white;
+  display: grid;
+  grid-template-rows: 1fr 50px;
+}
+
+/* MonthStack */
+.monthStack{
+  display: grid;
+  grid-template-columns: repeat(12,1fr);
+}
+
+.monthColumn{
+  display: grid;
+  grid-template-rows: 1fr;
+}
+
+
+/* Calender month */
+.calenderDivs{
+  border: 2px solid black;
+  border-radius: 5px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  margin: 5px;
+  height: 30px; 
+  background-color: rgb(223, 223, 223);
+}
+
+.calenderDivs p{
+  padding: 7px 3px 0px 3px;
+  margin: 0px;
+ 
+  font-size: 0.7vw;
+}
+
+.cTick{
+    border-radius: 5px 0px 0px 5px;
+    text-align: left;
+}
+
+.cSum{
+  border-radius: 0px 5px 5px 0px;
+  text-align: right;
+}
+
+.calenderDivs{
+  transition-duration: 0.2s;
+}
+
+.calenderDivs:hover {
+  color: rgb(255, 255, 255);
+  background-color: rgb(145, 189, 214);
+}
+
+/* MonthNames */
+.monthNames{
+  display: grid;
+  grid-template-columns: repeat(12,1fr);
+  text-align: center;
+  padding-top: 8px;
+  border-top: 3px solid black;
+  font-size: 25px;
+}
+
+/* Portfolio comparison */
+#portfolioComparison{
+  /* position: absolute; */
+}
+
+#comparePort{
+  position: relative;
+  height: 828px;
+  width: 1fr;
+  margin-right: 200px;
+  background-color: rgb(236, 236, 236);
+}
+
+#closeComparison{
+  height: 85px;
+  width: 85px;
+  font-size: 20px;
+  background-color: rgba(96, 132, 168, 0.63);
+  border: none;
+}
+
+#closeComparison:hover{
+  background-color: rgba(168, 96, 124, 0.63);
+  cursor: pointer;
+}
+
+#compareCharts{
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+}
+
+.compareChart{
+  height: 200px;
+  width: 1fr;
+}
+
+/* Ticker info section */
+.tickerInfoSection{
+  position: absolute;
+  /* height: 881px; */
+  height: 1fr;
+  width: 1fr;
+  margin-right: 200px;
+  background-color: rgb(255, 255, 255);
+  margin-left: 200px;
+}
+
+#tickerInfoBar{
+  height: 85px;
+  background-color: rgb(212, 212, 212);
+  /* border: 3px solid rgb(123, 124, 124); */
+  border-bottom: 4px solid rgb(155, 155, 155); 
+  /* padding-left: 20px; */
+  display:grid;
+  grid-template-columns: 85px 1fr 2fr;
+}
+
+#generalInfo{
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 350px;
+}
+
+.infoPart{
+  border-left: 2px solid rgb(155, 155, 155);
+}
+
+.infoPart h3{
+  background-color: rgb(155, 155, 155);
+  padding: 0px;
+  margin: 0px;
+  font-size: 15px;
+}
+
+.infoPart h1{
+  padding: 0px;
+  margin: 0px;
+  font-size: 10px;
+  padding-top: 25px;
+  text-align: center;
+}
+
+.infoPart p{
+  padding: 0px;
+  margin: 0px;
+  font-size: 10px;
+}
+
+
+#infoName{
+  padding-left: 20px;
+}
+
+#closeInfoPage{
+  font-size: 20px;
+  background-color: rgba(96, 132, 168, 0.63);
+  border: none;
+}
+
+#closeInfoPage:hover{
+  background-color: rgba(168, 96, 124, 0.63);
+  cursor: pointer;
+}
+
+/* Ticker Info charts */
+#tickerInfoCharts{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 370px 370px;
+}
+
+/* ChartSection */
+.chartSection{
+  height: 428px;
+  width: 1fr;
+  /* margin-right: 200px; */
+  height: 1fr;
+  background: linear-gradient(#ffffff, #a4a6c7);
+  display: grid;
+  grid-template-columns: 200px 1fr;
+}
+
+#divChart{
+  margin-right: 10px;
+}
+
+/* PriceChart */
+#priceChart{
+  background-color: rgb(163, 181, 189);
+  margin-top: 10px;
+  margin-left: 10px;
+  padding: 0px 10px 15px 10px;
+  height: 315px;
+  border: 3px solid rgb(93, 105, 114);
+  border-radius: 10px;
+}
+
+#priceChartOptions{
+  display: grid;
+  padding-left: 40px;
+  margin-top: 20px;
+  grid-template-columns: 300px 100px 110px repeat(5,1fr);
+}
+
+#priceSwitch{
+  padding: 0px 15px;
+  margin: 0px;
+  display: grid;
+  grid-template-rows: 1fr 1fr;
+}
+
+#priceSwitch button{
+  padding: 0px;
+  /* padding-top: 2px; */
+  margin: 0px;
+  font-size: 11px;
+}
+
+#priceChartLabel{
+  margin: 0px;
+  padding: 0px;
+}
+
+#priceChange{
+  /* margin-right: 50px; */
+  background-color: rgb(150, 150, 150);
+}
+
+/* EarningsChart */
+#earningsChart{
+  background-color: rgb(163, 181, 189);
+  /* margin-top: 10px; */
+  margin-left: 10px;
+  padding: 0px 10px 15px 10px;
+  height: 315px;
+  border: 3px solid rgb(93, 105, 114);
+  border-radius: 10px;
+}
+
+#earningsChartOptions{
+  display: grid;
+  padding-left: 40px;
+  margin-top: 20px;
+  grid-template-columns: 280px 60px repeat(4,1fr);
+}
+
+#earningsChartLabel{
+  margin: 0px;
+  padding: 0px;
+}
+
+#earningsTimeFrame{
+  font-size: 14px;
+  background-color: rgb(150, 150, 150);
+}
+
+/* PredictionChart */
+#forecastChart{
+  background-color: rgb(163, 181, 189);
+  /* margin-top: 10px; */
+  margin: 0px 10px 0px 30px;
+  padding: 0px 20px 15px 20px;
+  height: 315px;
+  border: 3px solid rgb(93, 105, 114);
+  border-radius: 10px;
+}
+
+#forecastOptions{
+  padding-top: 20px;
+  display: grid;
+  grid-template-columns: 1fr 100px 100px;
+}
+
+#forecastOptions h3{
+  margin: 0px;
+  padding: 0px;
+}
+#forecastOptions button{
+  margin: 0px;
+  padding: 0px;
+}
+
+
+
+/* Statistics */
+#statistics{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+#stats{
+  display: grid;
+  grid-template-columns: 1fr 190px;
+  grid-template-rows: repeat(8,40px);
+  padding-top: 5px;
+  padding-left: 30px;
+  padding-right: 35px;
+}
+
+#stats p{
+  padding-bottom: 0px;
+  padding-top: 10px;
+  margin: 0px;
+  border-bottom: 2px solid rgb(112, 112, 112);
+  font: 10px;
+}
+
+#stats h3{
+  padding-bottom: 0px;
+  padding-top: 10px;
+  margin: 0px;
+  border-bottom: 2px solid  rgb(112, 112, 112);
+  text-align: right;
+  font-size: 15px;
+}
+
+#growthRate{
+  margin: 0px;
+  padding: 0px;
+  padding-bottom: 15px;
+}
+
+#growthGraphs{
+  padding-top: 17px;
+  margin-right: 10px;
+}
+
+#growthOptions{
+  display: grid;
+  grid-template-columns: 170px repeat(3,1fr);
+}
+
+#growthOptions button{
+  padding: 0px;
+  margin: 0px;
+  font-size: 15px;
+  height: 30px;
+
+}
+
+/* Set target */
+#setTarget{
+  /* background-color: rgb(231, 31, 103); */
+}
+
+/* Mainchart */
+#mainChart{
+  padding-top:10px;
+}
+
+/* Calender Statistics */
+#selectStat{
+  display:grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.statsButton{
+  height: 30px;
+  margin-top: 10px;
+}
+
+.statsButton:hover{
+  cursor: pointer;
+}
+
+#dividendStats{
+  border:3px solid black;
+  border-radius: 5px;
+  margin-top: 10px;
+  padding-left: 5px;
+  background-color: rgba(255, 99, 132, 0.4);
+}
+
+#dividendStats h1{
+  margin: 0px;
+  padding: 0px;
+  padding-top: 10px;
+}
+
+#dividendStats h3{
+  margin: 0px;
+  padding: 0px;
+  padding: 10px 0px 5px 0px;
+}
+
+#dividendStats p{
+  font-size: 20px;
+  margin: 0px;
+  padding: 0px
+}
+
+
+#donutCharts{
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  height: 350px;
+  margin-right: 180px;
+  /* padding-right: 50px; */
+}
+
+.donutContainer{
+  padding: 20px 50px 0px 50px;
+  height: 400px;
+  width: 400px;
+  
+}
+
+.donutHeader{
+  /* position: absolute; */
+  height: 1px;
+  padding: 0px;
+  padding-top: 10px;
+  margin: 0px;
+  text-align: center;
+}
+
+/* SelectChart */
+/* .selectChart{
+  display: grid;
+  grid-template-columns:repeat(10,80px);
+  margin-left: auto;
+} */
+
+selectEarn{
+}
+
+
