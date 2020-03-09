@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import { Bar } from 'react-chartjs-2';
 import 'chartjs-plugin-datalabels';
+import { CONNREFUSED } from 'dns';
+import { element } from 'prop-types';
 
 export class PortfolioComparison extends Component {
     constructor() {
@@ -160,18 +162,20 @@ export class PortfolioComparison extends Component {
             }
 
             for (let key in marginOb) {
-                margin.push(marginOb[key][0].margin)
+                margin.push(marginOb[key][0].margin.toFixed(1))
                 marginLabel.push(marginOb[key][0].name);
             }
 
             for (let key in cratioOb) {
-                cratio.push(cratioOb[key][0].cratio)
+                cratio.push(cratioOb[key][0].cratio.toFixed(1))
                 cratioLabel.push(cratioOb[key][0].name);
             }
 
             for (let key in insiderOb) {
-                insider.push(insiderOb[key][0].insider.toFixed(1))
-                insiderLabel.push(insiderOb[key][0].name);
+                if(insiderOb[key][0].insider){
+                    insider.push(insiderOb[key][0].insider.toFixed(1))
+                    insiderLabel.push(insiderOb[key][0].name);                    
+                }
             }
 
             for (let key in divPercentOb) {
@@ -180,7 +184,7 @@ export class PortfolioComparison extends Component {
             }
 
             for (let key in payoutRatioOb) {
-                payoutRatio.push((payoutRatioOb[key][0].payoutRatio * 100).toFixed(1));
+                payoutRatio.push((payoutRatioOb[key][0].payoutRatio * 100).toFixed(0));
                 payoutRatioLabel.push(payoutRatioOb[key][0].name);
             }
 
@@ -277,7 +281,7 @@ export class PortfolioComparison extends Component {
                 responsive: false,
                 plugins: {
                     datalabels: {
-                        display: true,
+                        display: false,
                         color: 'black',
                         align: 'end',
                         anchor: 'end',
@@ -290,7 +294,7 @@ export class PortfolioComparison extends Component {
                 responsive: false,
                 plugins: {
                     datalabels: {
-                        display: true,
+                        display: false,
                         color: 'black',
                         align: 'end',
                         anchor: 'end',
@@ -303,7 +307,7 @@ export class PortfolioComparison extends Component {
                 responsive: false,
                 plugins: {
                     datalabels: {
-                        display: true,
+                        display: false,
                         color: 'black',
                         align: 'end',
                         anchor: 'end',

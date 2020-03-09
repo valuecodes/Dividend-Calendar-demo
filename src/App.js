@@ -56,7 +56,16 @@ export class App extends Component {
       ['T',50],
       ['JNJ',50],
       ['CCL',50],
-      ['ADM',50]
+      ['ADM',50],
+      ['SAMPO',50],
+      ['IBM',50],
+      ['CSCO',50],
+      ['UL',50],
+      ['VEDL',50],
+      ['GE',50],
+      ['XOM',50],
+      ['GS',50],
+      ['CHL',50],
     ];
 
     let currentPortfolio={
