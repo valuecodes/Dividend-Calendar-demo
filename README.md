@@ -2,7 +2,7 @@
 
 Website to track dividends, analyze long term company data and compare portfolio of stocks.
 
-Click [here](https://zxq0t.csb.app/) to test.
+Click [here](https://37q9t.csb.app/) to test.
 
 ## Ticker page 
 Select company from side list
