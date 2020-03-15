@@ -12,9 +12,9 @@ export class Search extends Component {
         };
     }
     componentDidMount(){
-        // fetch('/tickerList')
-        //     .then(res => res.json())
-        //     .then(tickers => this.setState({tickers}, () => this.tickerList=tickers));
+        fetch('/tickerList')
+            .then(res => res.json())
+            .then(tickers => this.setState({tickers}, () => this.tickerList=tickers));
     }
     searchstocks=(e)=>{
         let matchValues = Object.values(this.tickerList.filter(ticker=>{

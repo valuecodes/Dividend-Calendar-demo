@@ -186,7 +186,6 @@ export class EarningsChart extends Component {
             let options = {
                 maintainAspectRatio: true,
                 responsive: true,
-                scaleBeginAtZero: true,
                 width: "100px",
                 height: "100px",
                 plugins: {
@@ -210,8 +209,6 @@ export class EarningsChart extends Component {
                     yAxes: [{
                         ticks: {
                             beginAtZero: true,
-                            // max: 100,
-                            min: 0,
                             callback: function (value) {
                                 if (state.payoutRatio || state.earningsYield) {
                                     return value + "%";
@@ -231,7 +228,7 @@ export class EarningsChart extends Component {
                         }
                     }],
                     xAxes: [{
-                        offset: state.current || state.payoutRatio, 
+                        offset: state.current || state.payoutRatio,
                         ticks: {
                             // beginAtZero: true,
                             fontSize: 14

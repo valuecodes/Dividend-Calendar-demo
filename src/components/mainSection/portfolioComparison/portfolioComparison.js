@@ -423,8 +423,8 @@ export class PortfolioComparison extends Component {
 
     render() {
         return (
-            <div id='comparePort'>
-                <button id="closeComparison" onClick={this.props.closeComparison}>Back</button>
+            <div id='comparePort' className='comparisonContainer'>
+                <button className="closeComparison" onClick={this.props.closeComparison}>Back</button>
                 <div id='compareCharts'>
                     <div className='compareChart'>
                         {<Bar
@@ -506,4 +506,3 @@ export class PortfolioComparison extends Component {
 }
 
 export default PortfolioComparison
-

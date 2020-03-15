@@ -81,10 +81,47 @@
 }
 
 /* Stats */
-.stats{
-  font-size: 30px;
-  padding-left: 30px;
+#infoBarStats{
+  font-size: 20px;
+  padding-left: 20px;
+  display: grid;
+  grid-template-columns: 165px repeat(4,1fr 1fr) 240px;
 }
+
+.statHead {
+  padding-top: 7px;
+  font-size: 20px;
+  margin: 0px;
+}
+
+.statNumber{
+  padding-top: 5px;
+  padding-right: 5px;
+  font-size: 23px;
+  margin: 0px;
+  text-align: right;
+  font-weight: bold;
+}
+.divsHeader{
+  border: 2px solid black;
+  border-radius: 5px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  width: 130px;
+  height: 29px;
+  margin: 1px;
+  margin-left: 5px;
+  background-color: rgb(223, 223, 223);
+}
+
+.divsHeader p{
+  font-size: 16px;
+  /* text-align: center; */
+  margin: 0px;
+  padding: 0px 7px 0px 7px;
+  padding-top: 6px;
+}
+
 
 /* Main section */
 .mainSection{
@@ -331,7 +368,7 @@
   /* position: absolute; */
 }
 
-#comparePort{
+.comparisonContainer{
   position: relative;
   height: 828px;
   width: 1fr;
@@ -339,7 +376,7 @@
   background-color: rgb(236, 236, 236);
 }
 
-#closeComparison{
+.closeComparison{
   height: 85px;
   width: 85px;
   font-size: 20px;
@@ -347,7 +384,7 @@
   border: none;
 }
 
-#closeComparison:hover{
+.closeComparison:hover{
   background-color: rgba(168, 96, 124, 0.63);
   cursor: pointer;
 }
@@ -630,27 +667,30 @@
   cursor: pointer;
 }
 
-#dividendStats{
+.statContainer{
+  position: absolute;
+  width: 190px;
   border:3px solid black;
   border-radius: 5px;
   margin-top: 10px;
   padding-left: 5px;
   background-color: rgba(255, 99, 132, 0.4);
+  height: 326px;
 }
 
-#dividendStats h1{
+.statContainer h1{
   margin: 0px;
   padding: 0px;
   padding-top: 10px;
 }
 
-#dividendStats h3{
+.statContainer h3{
   margin: 0px;
   padding: 0px;
   padding: 10px 0px 5px 0px;
 }
 
-#dividendStats p{
+.statContainer p{
   font-size: 20px;
   margin: 0px;
   padding: 0px
@@ -681,14 +721,64 @@
   text-align: center;
 }
 
-/* SelectChart */
-/* .selectChart{
-  display: grid;
-  grid-template-columns:repeat(10,80px);
-  margin-left: auto;
-} */
-
 selectEarn{
 }
 
+/* Financial Comparison Page */
 
+#fcOptions{
+  padding: 0px 0px 0px 100px;
+  display:grid;
+  grid-template-rows:40px repeat(3, 100px);
+  margin-top: -70px;
+}
+
+#fcTickers{
+  height: 200px;
+  width: 1fr;
+  display: grid;
+  grid-template-columns: repeat(15, 1fr);
+}
+
+.fcButton{
+  border: 2px solid black;
+  border-radius: 5px;
+  display: grid;
+  grid-template-columns: 1fr;
+  width: 100px;
+  height: 30px;
+  margin-left: 5px;
+  background-color: rgb(223, 223, 223);
+  padding: 5px 0px 0px 0px;
+  text-align: center;
+}
+
+.fcKeys{
+  height: 90px;
+  /* width: 1fr; */
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+  border: 3px solid black;
+  border-radius: 10px;
+  background-color: rgba(181, 211, 235, 0.596);
+  margin-top: 5px;
+}
+.fcKeysHeader{
+  padding-top: 3px;
+  margin: 0px;
+  grid-column-start: 1;
+  grid-column-end: 3;
+}
+
+.fcKeyButton{
+  border: 2px solid black;
+  border-radius: 5px;
+  display: grid;
+  grid-template-columns: 1fr;
+  width: 129px;
+  height: 25px;
+  margin: 1px 0px 1px 2px;
+  background-color: rgb(223, 223, 223);
+  padding: 2px 0px 0px 0px;
+}
