@@ -29,7 +29,6 @@ export class App extends Component {
   }
 
   componentDidMount() {
-    console.log(divData);
 
     class company {
       constructor(tickerData, weeklyData, yearData, dividendData, insiderData) {
@@ -40,7 +39,6 @@ export class App extends Component {
         this.insiderData = insiderData;
       }
     }
-    // console.log(dbData);
     let diData={};
     for (var i = 0; i < divData.length; i++) {
       diData[divData[i][0].ticker] = new company(
@@ -52,8 +50,6 @@ export class App extends Component {
       );
     }
 
-    console.log(diData);
-
     let tickers=[
       ['T',50],
       ['JNJ',50],
@@ -64,10 +60,12 @@ export class App extends Component {
       ['CSCO',50],
       ['UL',50],
       ['VEDL',50],
-      ['GE',50],
       ['XOM',50],
       ['GS',50],
       ['CHL',50],
+      ['SAND',50],
+      ['EPIRb',50],
+      ['ATCOb',50],
     ];
 
     let currentPortfolio={
@@ -77,7 +75,6 @@ export class App extends Component {
       isActive:true,
       dividendData:diData
     }
-    console.log(currentPortfolio);
     this.setState({ currentportfolio: currentPortfolio, portfolios: [currentPortfolio],dividendData:diData});
 
     
@@ -254,7 +251,6 @@ export class App extends Component {
         },
         body: JSON.stringify(data)
       }
-      console.log(options);
       fetch('http://localhost:3000/getDividendData', options)
         .then(res => res.json())
         .then(dbData => {
@@ -268,7 +264,6 @@ export class App extends Component {
               this.insiderData = insiderData;
             }
           }
-          console.log(dbData);
           for (var i = 0; i < dbData.data.length; i++) {
             divData[dbData.data[i][0].ticker] = new company(
               dbData.data[i][0],
@@ -316,51 +311,49 @@ export class App extends Component {
     this.setState({ mainPage: 'none', infoPage: '', portfolioComparison: 'none', financialComparison: 'none', selectedCompany: this.state.dividendData[ticker] });
   }
 
-  closeInfoPage() {
-    this.setState({ mainPage: '', infoPage: 'none', portfolioComparison: 'none', financialComparison: 'none', selectedCompany: null });
-  }
+  changeMainPage(type) {
+    console.log(type);
 
-  showComparison() {
-    this.setState({ mainPage: 'none', infoPage: 'none', portfolioComparison: '', financialComparison: 'none', selectedCompany: null });
+    this.setState({
+      mainPage: type === 'mainPage' || type === 'stats' || type === 'calender' ? '' : 'none',
+      calender: type === 'mainPage' || type === 'calender' ? '' : 'none',
+      stats: type === 'stats' ? '' : 'none',
+      infoPage: type === 'infoPage' ? '' : 'none',
+      portfolioComparison: type === 'portfolioComparison' ? '' : 'none',
+      financialComparison: type === 'financialComparison' ? '' : 'none',
+      selectedCompany: null
+    });
   }
-
-  closeComparison() {
-    this.setState({ mainPage: '', infoPage: 'none', portfolioComparison: 'none', financialComparison: 'none', selectedCompany: null })
-  }
-
-  showFinancialComparison() {
-    console.log('test');
-    this.setState({ mainPage: 'none', infoPage: 'none', portfolioComparison: 'none', financialComparison: '', selectedCompany: null });
-  }
-
 
   render() {
-    console.log(this.state.monthStack)
     return (
       < div className="App" >
         <header className="App-header">
           <Header />
-          <NavBar addTicker={this.addTicker.bind(this)} comparison={this.showComparison.bind(this)} financialComparison={this.showFinancialComparison.bind(this)} monthStack={this.state.monthStack} />
+          <NavBar addTicker={this.addTicker.bind(this)} comparison={this.changeMainPage.bind(this, 'portfolioComparison')} financialComparison={this.changeMainPage.bind(this, 'financialComparison')} monthStack={this.state.monthStack} />
           <div className='mainSection' >
             <div className='mainList'>
               <Portfolios createPortfolio={this.createPortfolio.bind(this)} allPortfolios={this.state.portfolios} selectPortfolio={this.selectPortfolio.bind(this)} selectedPortfolio={this.state.currentportfolio.name} deletePortfolio={this.deletePortfolio.bind(this)} />
               <MainTickerList onChange={this.currentportfolio} tickers={this.state.currentportfolio.tickers} deleteTicker={this.deleteTicker.bind(this)} addShares={this.addShares.bind(this)} showTickerInfo={this.showTickerInfo.bind(this)} />
             </div>
             <div className='tickerInfoSection' style={{ display: this.state.infoPage }} >
-              <TickerInfoPage closeInfoPage={this.closeInfoPage.bind(this)} selectedCompany={this.state.selectedCompany} />
+              <TickerInfoPage closeInfoPage={this.changeMainPage.bind(this, 'mainPage')} selectedCompany={this.state.selectedCompany} />
             </div>
             <div id='portfolioComparison' style={{ display: this.state.portfolioComparison }}>
-              <PortfolioComparison selectedCompany={this.state.selectedCompany} closeComparison={this.closeComparison.bind(this)} portfolio={this.state.currentportfolio} state={this.state.portfolioComparison} />
+              <PortfolioComparison selectedCompany={this.state.selectedCompany} closeComparison={this.changeMainPage.bind(this, 'mainPage')} portfolio={this.state.currentportfolio} state={this.state.portfolioComparison} />
             </div>
             <div id='financialComparison' style={{ display: this.state.financialComparison }}>
-              <FinancialComparison closeComparison={this.closeComparison.bind(this)} portfolio={this.state.currentportfolio} state={this.state.financialComparison} />
+              <FinancialComparison closeComparison={this.changeMainPage.bind(this, 'mainPage')} portfolio={this.state.currentportfolio} state={this.state.financialComparison} />
             </div>
-            <div style={{ display: this.state.mainPage }}>
+            <div style={{ display: this.state.calender }}>
               <Calender currentportfolio={this.state.currentportfolio} setMonthStack={this.setMonthStack.bind(this)} />
+            </div>
+            <div id='portfolioStatistics' style={{ display: this.state.stats }}>
+              {/* <GeoChart portfolio={this.state.currentportfolio} /> */}
             </div>
           </div>
           <div style={{ display: this.state.mainPage }}>
-            <ChartSection monthStackData={this.state.monthStack} allData={this.state.dividendData} portfolio={this.state.currentportfolio} />
+            <ChartSection monthStackData={this.state.monthStack} allData={this.state.dividendData} portfolio={this.state.currentportfolio} changeMainPage={this.changeMainPage.bind(this)} />
           </div>
         </header>
       </div >

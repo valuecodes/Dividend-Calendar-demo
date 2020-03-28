@@ -70,17 +70,16 @@ export class FinancialComparison extends Component {
                     'rgba(172,209, 93,1)',
                 ]
 
-                for (var i = 0; i < selected.length; i++) {
+                for (var a = 0; a < selected.length; a++) {
                     let label = [];
                     let cData = [];
-                    for (var a = data[selected[i]].yearData.length - 1; a >= 0; a--) {
-                        // console.log(data[selected[i]].yearData[a][selectedKey]);
-                        label.push(data[selected[i]].yearData[a]['year']);
-                        cData.push(data[selected[i]].yearData[a][selectedKey]);
+                    for (var c = data[selected[a]].yearData.length - 1; c >= 0; c--) {
+                        label.push(data[selected[a]].yearData[c]['year']);
+                        cData.push(data[selected[a]].yearData[c][selectedKey]);
 
                     }
-                    tickerLabels.push(selected[i]);
-                    color.push(colors[i]);
+                    tickerLabels.push(selected[a]);
+                    color.push(colors[a]);
                     labelDataTotal.push(label);
                     cDataTotal.push(cData);
                 }
@@ -89,17 +88,19 @@ export class FinancialComparison extends Component {
                     datasets: []
                 }
 
-                for (var i = 0; i < cDataTotal.length; i++) {
+                for (var x = 0; x < cDataTotal.length; x++) {
                     chartData.datasets.push({
-                        label: tickerLabels[i],
-                        data: cDataTotal[i],
+                        label: tickerLabels[x],
+                        data: cDataTotal[x],
                         backgroundColor: 'rgba(255, 99, 132, 0.1)',
-                        borderColor: color[i],
+                        borderColor: color[x],
                         borderWidth: 5
                     })
                 }
 
                 chartOptions = {
+                    maintainAspectRatio: true,
+                    responsive: true,
                     plugins: {
                         datalabels: {
                             display: false,
@@ -159,45 +160,44 @@ export class FinancialComparison extends Component {
     }
 
     render() {
-        console.log(this.state);
         return (
             <div id='financialComparisonPage' className='comparisonContainer'>
                 <button className="closeComparison" onClick={this.props.closeComparison}>Back</button>
                 <div id='fcOptions'>
                     <div id='fcTickers'>
-                        {this.state.tickers.map(ticker =>
-                            <button style={{ background: this.setTickerColor(ticker) }} onClick={this.selectTicker.bind(this, ticker)} className='fcButton'>{ticker}</button>
+                        {this.state.tickers.map((ticker, index) =>
+                            <button key={index} style={{ background: this.setTickerColor(ticker) }} onClick={this.selectTicker.bind(this, ticker)} className='fcButton'>{ticker}</button>
                         )}
                     </div>
                     <div className='fcKeys'>
                         <h3 className='fcKeysHeader'>Income Statement</h3>
-                        {this.state.incomeKeys.map(key =>
-                            <button style={{ background: this.setKeyColor(key) }} onClick={this.selectRatio.bind(this, key)} className='fcKeyButton'>{key.slice(0, 14)}</button>
+                        {this.state.incomeKeys.map((key, index) =>
+                            <button key={index} style={{ background: this.setKeyColor(key) }} onClick={this.selectRatio.bind(this, key)} className='fcKeyButton'>{key.slice(0, 14)}</button>
                         )}
                     </div>
                     <div className='fcKeys'>
                         <h3 className='fcKeysHeader'>Balance Sheet</h3>
-                        {this.state.balanceKeys.map(key =>
-                            <button style={{ background: this.setKeyColor(key) }} onClick={this.selectRatio.bind(this, key)} className='fcKeyButton'>{key.slice(0, 14)}</button>
+                        {this.state.balanceKeys.map((key, index) =>
+                            <button key={index} style={{ background: this.setKeyColor(key) }} onClick={this.selectRatio.bind(this, key)} className='fcKeyButton'>{key.slice(0, 14)}</button>
                         )}
                     </div>
                     <div className='fcKeys'>
                         <h3 className='fcKeysHeader'>Cash Flow Statement</h3>
-                        {this.state.cashflowKeys.map(key =>
-                            <button style={{ background: this.setKeyColor(key) }} onClick={this.selectRatio.bind(this, key)} className='fcKeyButton'>{key.slice(0, 14)}</button>
+                        {this.state.cashflowKeys.map((key, index) =>
+                            <button key={index} style={{ background: this.setKeyColor(key) }} onClick={this.selectRatio.bind(this, key)} className='fcKeyButton'>{key.slice(0, 14)}</button>
                         )}
                     </div>
                     <div className='fcKeys'>
                         <h3 className='fcKeysHeader'>Financial Ratios</h3>
-                        {this.state.ratiosKeys.map(key =>
-                            <button style={{ background: this.setKeyColor(key) }} onClick={this.selectRatio.bind(this, key)} className='fcKeyButton'>{key.slice(0, 14)}</button>
+                        {this.state.ratiosKeys.map((key, index) =>
+                            <button key={index} style={{ background: this.setKeyColor(key) }} onClick={this.selectRatio.bind(this, key)} className='fcKeyButton'>{key.slice(0, 14)}</button>
                         )}
                     </div>
                 </div>
                 <Line
                     data={this.state.chartData}
                     width={50}
-                    height={13}
+                    height={11}
                     options={this.state.chartOptions}
                     datasetKeyProvider={this.datasetKeyProvider}
                 />
@@ -208,27 +208,27 @@ export class FinancialComparison extends Component {
 
 export default FinancialComparison
 
-let randomColor = () => {
-    let colors = [
-        'rgba( 45, 69,113,0.3)',
-        'rgba(115,142,192,0.3)',
-        'rgba( 74,100,149,0.3)',
-        'rgba( 45, 69,113,0.3)',
-        'rgba(115,142,192,0.3)',
-        'rgba( 74,100,149,0.3)',
-        'rgba( 73, 46,116,0.3)',
-        'rgba(147,116,195,0.3)',
-        'rgba(105, 75,152,0.3)',
-        'rgba( 40,119, 79,0.3)',
-        'rgba(111,199,154,0.3)',
-        'rgba( 70,157,113,0.3)',
-        'rgba( 40,119, 79,0.3)',
-        'rgba(111,199,154,0.3)',
-        'rgba( 70,157,113,0.3)',
-        'rgba(125,159, 53,0.3)',
-        'rgba(208,243,135,0.3)',
-        'rgba(172,209, 93,0.3)',
-    ]
-    let num = Math.floor(Math.random() * 20);
-    return colors[num];
-}
+// let randomColor = () => {
+//     let colors = [
+//         'rgba( 45, 69,113,0.3)',
+//         'rgba(115,142,192,0.3)',
+//         'rgba( 74,100,149,0.3)',
+//         'rgba( 45, 69,113,0.3)',
+//         'rgba(115,142,192,0.3)',
+//         'rgba( 74,100,149,0.3)',
+//         'rgba( 73, 46,116,0.3)',
+//         'rgba(147,116,195,0.3)',
+//         'rgba(105, 75,152,0.3)',
+//         'rgba( 40,119, 79,0.3)',
+//         'rgba(111,199,154,0.3)',
+//         'rgba( 70,157,113,0.3)',
+//         'rgba( 40,119, 79,0.3)',
+//         'rgba(111,199,154,0.3)',
+//         'rgba( 70,157,113,0.3)',
+//         'rgba(125,159, 53,0.3)',
+//         'rgba(208,243,135,0.3)',
+//         'rgba(172,209, 93,0.3)',
+//     ]
+//     let num = Math.floor(Math.random() * 20);
+//     return colors[num];
+// }

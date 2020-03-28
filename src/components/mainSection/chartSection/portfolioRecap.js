@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import { Spring } from 'react-spring/renderprops';
-import { Transition, animated } from 'react-spring/renderprops';
 
 export class PortfolioRecap extends Component {
 
@@ -26,7 +25,6 @@ export class PortfolioRecap extends Component {
                 total += divData[tickers[i][0]].weeklyData[0].close * tickers[i][1];
                 earnings += divData[tickers[i][0]].yearData[0].EPSEarningsPerShare * tickers[i][1];
             }
-            console.log(earnings / total);
             return {
                 totalPortfolio: total,
                 totalDividends: props.totalSum,
@@ -48,7 +46,6 @@ export class PortfolioRecap extends Component {
     }
 
     render() {
-        console.log('render')
         return (
             <div className='statContainer'>
                 <h1>Portfolio</h1>
@@ -56,6 +53,7 @@ export class PortfolioRecap extends Component {
                     from={{ totalPortfolio: 0, totalDividends: 0, divPercent: 0, payOutRatio: 0, peRatio: 0, earningsYield: 0 }}
                     to={{ totalPortfolio: this.state.totalPortfolio, totalDividends: this.state.totalDividends, divPercent: this.state.divPercent, payOutRatio: this.state.payOutRatio, peRatio: this.state.peRatio, earningsYield: this.state.earningsYield }}
                     config={{ duration: 2000 }}
+                    key={this.props.stats}
                 >
                     {props => (
                         <div style={props}>

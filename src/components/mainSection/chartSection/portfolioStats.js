@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import { Spring } from 'react-spring/renderprops';
-import { Transition, animated } from 'react-spring/renderprops';
 
 export class PortFolioStats extends Component {
     constructor() {
@@ -54,8 +53,3 @@ export class PortFolioStats extends Component {
 }
 
 export default PortFolioStats
-
-const counter = {
-    paddingTop: 6,
-    margin: 0,
-}

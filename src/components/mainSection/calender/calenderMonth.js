@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 
 export class CalenderMonth extends Component {
-
     onHover(state, id) {
         let res = document.getElementsByClassName('ticker.' + id);
 
@@ -18,10 +17,19 @@ export class CalenderMonth extends Component {
         }
     }
     render() {
+        // console.log(this.props.ticker,this.props.data.month,this.props.data.day,this.props.startDay,(((4 - Math.floor((this.props.data.day) / 7)) * 50)));
+        let style = {
+            position: this.props.monthView === false ? '' : 'relative',
+            left: -(124 * this.props.month - 154) + ((this.props.data.day % 7 === 0 ? 7 : this.props.data.day % 7) * 211 - 211),
+            bottom:(((4 - Math.floor((this.props.data.day) / 7)) * 52)) - (this.props.index * 39)+94,
+        };
         return (
-            <div onMouseEnter={this.onHover.bind(this, 'in', this.props.ticker)} onMouseLeave={this.onHover.bind(this, 'out', this.props.ticker)} className={['calenderDivs', 'ticker.' + this.props.ticker, "main-class"].join(' ')}>
-                <p className='cTick'>{this.props.ticker}</p>
-                <p className='cSum'>{this.props.payment + ' €'}</p>
+
+            <div style={style}>
+                <div onMouseEnter={this.onHover.bind(this, 'in', this.props.ticker)} onMouseLeave={this.onHover.bind(this, 'out', this.props.ticker)} className={['calenderDivs', 'ticker.' + this.props.ticker, "main-class"].join(' ')}>
+                    <p className='cTick'>{this.props.ticker}</p>
+                    <p className='cSum'>{this.props.payment + ' €'}</p>
+                </div>
             </div>
         )
     }

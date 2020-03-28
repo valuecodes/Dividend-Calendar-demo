@@ -14,7 +14,6 @@ export class Portfolios extends Component {
     }
 
     addNewPortfolio() {
-        // console.log(this.state.addNew.visible)
         if (this.state.addNew.visibility === 'hidden') {
             this.setState({ addNew: { visibility: 'visible' } })
         } else {
@@ -72,7 +71,6 @@ export class Portfolios extends Component {
 
     render() {
         let visibilityState = this.state.showAll.visibility;
-        // console.log(this.props);
         return (
             <div className='portfolios'>
                 <h2 className='selectedPortfolio'>{this.props.selectedPortfolio}</h2>

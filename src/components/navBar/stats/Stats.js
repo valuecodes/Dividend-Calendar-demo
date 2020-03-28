@@ -46,7 +46,6 @@ export class Stats extends Component {
     }
 
     static getDerivedStateFromProps(props, state) {
-        console.log(props);
         if (JSON.stringify(props.monthStack) !== '[]') {
             let dividends = props.monthStack;
             let totalSum = 0;

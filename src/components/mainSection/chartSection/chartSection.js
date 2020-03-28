@@ -4,7 +4,6 @@ import { MainChart } from './mainChart';
 import { StatChart } from './statChart';
 import { PortfolioRecap } from './portfolioRecap';
 import { Spring } from 'react-spring/renderprops';
-import { Transition, animated } from 'react-spring/renderprops';
 
 export class ChartSection extends Component {
 
@@ -39,7 +38,6 @@ export class ChartSection extends Component {
     static getDerivedStateFromProps(props, state) {
 
         if (Object(props.monthStackData).length !== 0) {
-            console.log(props.monthStackData)
             let dividends = props.monthStackData;
             let monthSum = state.monthSum;
             let totalSum = 0;
@@ -74,6 +72,7 @@ export class ChartSection extends Component {
             statType: type,
             buttonClicked: true,
         });
+        this.props.changeMainPage(type);
     }
 
     setColor(position) {
@@ -84,8 +83,6 @@ export class ChartSection extends Component {
     }
 
     render() {
-        let state = this.state.calender;
-
         return (
             <div className='chartSection'>
                 <div className='chartStatistics'>
@@ -94,46 +91,13 @@ export class ChartSection extends Component {
                         <button className='statsButton' onClick={this.changeStat.bind(this, 'stats')} style={{ background: this.setColor("stats") }}>Statistics</button>
                     </div>
 
-                    <Spring
-                        from={{
-                            marginLeft: this.state.statType === 'calender' ? -200 : 0,
-                            opacity: this.state.statType === 'calender' ? 1 : 1,
-                        }}
+                    <div id='calenderRecap' style={{ display: this.state.calender }}>
+                        <PortFolioStats totalSum={this.state.totalSum} />
+                    </div>
 
-                        to={{
-                            marginLeft: this.state.statType === 'calender' ? 0 : 0,
-                            opacity: this.state.statType === 'calender' ? 1 : 0,
-                        }}
-                        config={{
-                            duration: 800,
-                        }}
-                        key={this.state.calender}
-                    >
-                        {props => (
-                            <div id='calenderRecap' style={props}>
-                                <PortFolioStats totalSum={this.state.totalSum} />
-                            </div>
-                        )}
-                    </Spring>
-                    <Spring
-                        from={{
-                            marginLeft: this.state.statType === 'stats' ? -200 : 0,
-                            opacity: this.state.statType === 'stats' ? 1 : this.state.buttonClicked === false ? 0 : 1,
-
-                        }}
-                        to={{
-                            marginLeft: this.state.statType === 'stats' ? 0 : 0,
-                            opacity: this.state.statType === 'stats' ? 1 : 0,
-                        }}
-                        config={{ duration: 800 }}
-                        key={this.state.statType}
-                    >
-                        {props => (
-                            <div id='portfolioRecap' style={props}>
-                                <PortfolioRecap portfolio={this.props.portfolio} totalSum={this.state.totalSum} />
-                            </div>
-                        )}
-                    </Spring>
+                    <div id='portfolioRecap' style={{ display: this.state.stats }}>
+                        <PortfolioRecap portfolio={this.props.portfolio} totalSum={this.state.totalSum} stats={this.state.stats} />
+                    </div>
                 </div>
 
                 <div id='divChart' style={{ display: this.state.calender }}>

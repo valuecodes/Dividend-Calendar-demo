@@ -330,8 +330,13 @@
 .calenderDivs p{
   padding: 7px 3px 0px 3px;
   margin: 0px;
- 
   font-size: 0.7vw;
+}
+
+.dividendContainer{
+  position: relative;
+  padding: 0px;
+  margin: 0px;
 }
 
 .cTick{
@@ -358,9 +363,59 @@
   display: grid;
   grid-template-columns: repeat(12,1fr);
   text-align: center;
-  padding-top: 8px;
+  /* padding-top: 8px; */
   border-top: 3px solid black;
   font-size: 25px;
+}
+
+.months{
+  padding: 0px;
+  margin: 0px;
+  padding-top: 8px;
+  padding-bottom:8px; 
+  height: 1fr;
+}
+
+.monthBlock{
+  transition-duration: 0.2s;
+}
+
+.monthBlock :hover{
+  background-color: rgb(76, 116, 175);
+  color: white;
+  cursor: pointer;
+}
+
+#monthCalender{
+  position: absolute;
+  background-color: #b3a1a11e;
+  height: 300px;
+  width: 77vw;
+  display: grid;
+  grid-template-columns: repeat(7,1fr);
+  grid-template-rows: repeat(7,1fr);
+  padding-bottom: 5px;
+}
+
+.dayBlockHeader{
+  font-size: 12px;
+  text-align: center;
+}
+
+.dayBlock{
+  border-right: 2px solid black;
+  border-bottom: 2px solid black;
+}
+
+.fillBlockTop{
+  /* height: 1fr; */
+  background-color: rgb(102, 133, 133);
+  border-bottom: 2px solid black;
+}
+.fillBlockBottom{
+  height:50px;
+  background-color: rgb(102, 133, 133);
+  border-bottom: 2px solid rgb(102, 133, 133);
 }
 
 /* Portfolio comparison */
@@ -389,14 +444,35 @@
   cursor: pointer;
 }
 
-#compareCharts{
+#pcChartSection{
+  width: 1fr;
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-columns: 900px 1fr;
+}
+
+#compareCharts{
+  width: 900px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  height:200px;
+  /* width:500px; */
+}
+
+.portfolioComparisonChart{
+  width: 1fr;
 }
 
 .compareChart{
   height: 200px;
   width: 1fr;
+}
+
+#portfolioResults{
+  /* background-color: rgba(105, 140, 170, 0.445); */
+  height:562px;
+  /* width: 1fr; */
+  border-left: 10px solid rgb(50, 72, 119);
+  background-color: rgb(204, 213, 233);
 }
 
 /* Ticker info section */
@@ -729,16 +805,40 @@ selectEarn{
 #fcOptions{
   padding: 0px 0px 0px 100px;
   display:grid;
-  grid-template-rows:40px repeat(3, 100px);
-  margin-top: -70px;
+  grid-template-rows:60px repeat(3, 100px);
+  margin-top: -80px;
+}
+
+#pcOptions{
+  padding: 0px 0px 0px 100px;
+  display:grid;
+  margin-top: -90px;
+  grid-template-rows:80px 60px;
+  /* margin-top: -70px; */
 }
 
 #fcTickers{
-  height: 200px;
+  height: 65px;
   width: 1fr;
   display: grid;
   grid-template-columns: repeat(15, 1fr);
 }
+
+.pcTickers{
+  height: 65px;
+  padding-top: 10px;
+  width: 1fr;
+  display: grid;
+  grid-template-columns: repeat(13, 1fr);
+}
+
+.pcSectors{
+  height: 40px;
+  width: 1fr;
+  display: grid;
+  grid-template-columns: repeat(13, 1fr);
+}
+
 
 .fcButton{
   border: 2px solid black;
@@ -749,7 +849,26 @@ selectEarn{
   height: 30px;
   margin-left: 5px;
   background-color: rgb(223, 223, 223);
-  padding: 5px 0px 0px 0px;
+  /* padding: 5px 0px 0px 0px; */
+  text-align: center;
+}
+
+.pcAllButton{
+  background-color: #347c99;
+  color: #ebebeb;
+  font-size: 15px;
+  padding: 0px;
+}
+
+.sectorButton{
+  border: 2px solid black;
+  border-radius: 5px;
+  display: grid;
+  grid-template-columns: 1fr;
+  width: 120px;
+  height: 50px;
+  margin-left: 5px;
+  background-color: rgb(223, 223, 223);
   text-align: center;
 }
 
@@ -763,6 +882,22 @@ selectEarn{
   border-radius: 10px;
   background-color: rgba(181, 211, 235, 0.596);
   margin-top: 5px;
+  /* overflow: scroll; */
+  /* overflow-x: hidden; */
+}
+
+.pcKeys{
+  height: 120px;
+  /* width: 1fr; */
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+  border: 3px solid black;
+  border-radius: 10px;
+  background-color: rgba(181, 211, 235, 0.596);
+  margin-top: 5px;
+  overflow: scroll; 
+  overflow-x: hidden;
 }
 .fcKeysHeader{
   padding-top: 3px;
@@ -771,14 +906,24 @@ selectEarn{
   grid-column-end: 3;
 }
 
+.pcKeysHeader{
+  padding: 0px;
+  margin: 0px;
+}
+
 .fcKeyButton{
   border: 2px solid black;
   border-radius: 5px;
   display: grid;
   grid-template-columns: 1fr;
   width: 129px;
-  height: 25px;
+  height: 28px;
   margin: 1px 0px 1px 2px;
   background-color: rgb(223, 223, 223);
-  padding: 2px 0px 0px 0px;
+  /* padding: 2px 0px 0px 0px; */
+}
+
+#portfolioStatistics{
+  margin: auto;
+  padding-right: 140px;
 }

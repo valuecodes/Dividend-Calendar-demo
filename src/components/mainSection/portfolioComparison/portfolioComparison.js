@@ -1,508 +1,264 @@
 import React, { Component } from 'react'
-import { Bar } from 'react-chartjs-2';
+import { Bar, Line } from 'react-chartjs-2';
 import 'chartjs-plugin-datalabels';
-import { CONNREFUSED } from 'dns';
-import { element } from 'prop-types';
+import portfolioResults, { PortfolioResults } from './portfolioResults'
 
 export class PortfolioComparison extends Component {
     constructor() {
         super();
         this.state = {
-            employeeData: {},
-            employeeDataOptions: {},
-            employeeRevData: {},
-            employeeRevDataOptions: {},
-            employeeProData: {},
-            employeeProDataOptions: {},
-            marginData: {},
-            marginDataOptions: {},
-            cratioData: {},
-            cratioDataOptions: {},
-            insiderData: {},
-            insiderDataOptions: {},
-            divPercentData: {},
-            divPercentDataOptions: {},
-            payoutRatioData: {},
-            payoutRatioDataOptions: {},
+            financialKeys: [],
+            selectedKey: null,
+            selectedKeys: null,
+            selectedCharts: [],
+            chartOptions: [],
+            activeTickers: [],
+            selectedTickers: [],
+            sectors: [],
+            selectedSector: null,
         };
     }
     static getDerivedStateFromProps(props, state) {
         if (JSON.stringify(props.portfolio) !== '[]' && props.state !== 'none') {
-            let data = props.portfolio.dividendData;
 
-            let keys = Object.keys(data);
+            let tickers = state.activeTickers;
+            if (tickers.length === 0) {
+                tickers = props.portfolio.tickers;
+                tickers = tickers.map(ticker => ticker[0]);
+            }
 
-            let employeesOb = {};
-            let employees = [];
-            let employeesLabel = [];
+            let selectedTickers = state.selectedTickers;
 
-            let employeesRevOb = [];
-            let revenue = [];
-            let revenueLabel = [];
+            if (Object.keys(selectedTickers).length === 0) {
+                tickers.forEach(element => {
+                    selectedTickers[element] = {
+                        ticker: element,
+                        selected: true
+                    }
+                });
+            }
 
-            let employeesProOb = [];
-            let profit = [];
-            let profitLabel = [];
+            let divData = props.portfolio.dividendData;
+            let keys = state.financialKeys;
+            if (Object.keys(keys).length === 0) {
+                let financialKeys = Object.keys(props.portfolio.dividendData[tickers[0]].yearData[0]);
+                keys = financialKeys.slice(1, 98);
+            }
 
-            let marginOb = [];
-            let margin = [];
-            let marginLabel = [];
+            let data = {};
+            let options = {};
 
-            let cratioOb = [];
-            let cratio = [];
-            let cratioLabel = [];
+            let selectedKeys = state.selectedKeys;
+            if (!selectedKeys) {
+                selectedKeys = [];
+                keys.forEach(element => {
+                    selectedKeys[element] = {
+                        key: element,
+                        selected: false
+                    }
+                });
+            }
 
-            let insiderOb = [];
-            let insider = [];
-            let insiderLabel = [];
+            let sectors = tickers.map(elem => props.portfolio.dividendData[elem].tickerData.sector);
 
-            let divPercentOb = [];
-            let divPercent = [];
-            let divPercentLabel = [];
+            sectors = [...new Set(sectors)];
+            let selectedSector = state.selectedSector;
 
-            let payoutRatioOb = [];
-            let payoutRatio = [];
-            let payoutRatioLabel = [];
+            if (state.selectedSector) {
 
-            for (var i = 0; i < keys.length; i++) {
-
-                let divs = data[keys[i]].dividendData.filter(element => element.year === 2019);
-                let totalDivs = 0;
-                divs.forEach(element => totalDivs += element.dividend);
-                divPercentOb.push([{
-                    name: keys[i],
-                    dividend: totalDivs / data[keys[i]].weeklyData[0].close,
-                }]);
-
-                employeesOb[data[keys[i]].tickerData.employees] = {
-                    name: keys[i],
-                    employees: data[keys[i]].tickerData.employees,
-                }
-
-                if (data[keys[i]].yearData.length === 1) {
-                    continue;
-                }
-
-                employeesRevOb.push([{
-                    name: keys[i],
-                    revenue: (data[keys[i]].yearData[1].Revenue * 1000000) / data[keys[i]].tickerData.employees
-                }]);
-                let comma = data[keys[i]].tickerData.country === 'USA' ? 1000000 : 1000;
-                employeesProOb.push([{
-                    name: keys[i],
-                    profit: (data[keys[i]].yearData[1].NetIncome * comma) / data[keys[i]].tickerData.employees
-                }]);
-                marginOb.push([{
-                    name: keys[i],
-                    margin: data[keys[i]].yearData[1].NetProfitMargin,
-                }]);
-                cratioOb.push([{
-                    name: keys[i],
-                    cratio: data[keys[i]].yearData[1].CurrentRatio,
-                }]);
-                insiderOb.push([{
-                    name: keys[i],
-                    insider: data[keys[i]].tickerData.insiderStake,
-                }]);
-
-
-                let eps = 0;
-                for (var a = 0; a < 1; a++) {
-                    if (data[keys[i]].yearData[a].EPSEarningsPerShare) {
-                        eps += data[keys[i]].yearData[a].EPSEarningsPerShare;
+                let secTickers = tickers.filter(elem => props.portfolio.dividendData[elem].tickerData.sector === selectedSector);
+                for (var i = 0; i < tickers.length; i++) {
+                    if (secTickers.includes(tickers[i])) {
+                        selectedTickers[tickers[i]].selected = true
+                    } else {
+                        selectedTickers[tickers[i]].selected = false
                     }
                 }
-                payoutRatioOb.push([{
-                    name: keys[i],
-                    payoutRatio: totalDivs / eps
-                }]);
             }
 
-            employeesRevOb = employeesRevOb.sort(function (a, b) {
-                return a[0].revenue - b[0].revenue;
-            });
+            let selected = [];
 
-            employeesProOb = employeesProOb.sort(function (a, b) {
-                return a[0].profit - b[0].profit;
-            });
-
-            marginOb = marginOb.sort(function (a, b) {
-                return a[0].margin - b[0].margin;
-            });
-
-            cratioOb = cratioOb.sort(function (a, b) {
-                return a[0].cratio - b[0].cratio;
-            });
-
-            insiderOb = insiderOb.sort(function (a, b) {
-                return a[0].insider - b[0].insider;
-            });
-
-            divPercentOb = divPercentOb.sort(function (a, b) {
-                return a[0].dividend - b[0].dividend;
-            });
-
-            payoutRatioOb = payoutRatioOb.sort(function (a, b) {
-                return a[0].payoutRatio - b[0].payoutRatio;
-            });
-
-            for (let key in employeesOb) {
-                employees.push(employeesOb[key].employees)
-                employeesLabel.push(employeesOb[key].name);
-            }
-
-            for (let key in employeesRevOb) {
-                revenue.push((employeesRevOb[key][0].revenue).toFixed(0))
-                revenueLabel.push(employeesRevOb[key][0].name);
-            }
-
-            for (let key in employeesProOb) {
-                profit.push((employeesProOb[key][0].profit).toFixed(0))
-                profitLabel.push(employeesProOb[key][0].name);
-            }
-
-            for (let key in marginOb) {
-                margin.push(marginOb[key][0].margin.toFixed(1))
-                marginLabel.push(marginOb[key][0].name);
-            }
-
-            for (let key in cratioOb) {
-                cratio.push(cratioOb[key][0].cratio.toFixed(1))
-                cratioLabel.push(cratioOb[key][0].name);
-            }
-
-            for (let key in insiderOb) {
-                if(insiderOb[key][0].insider){
-                    insider.push(insiderOb[key][0].insider.toFixed(1))
-                    insiderLabel.push(insiderOb[key][0].name);                    
+            for (var i = 0; i < tickers.length; i++) {
+                if (selectedTickers[tickers[i]].selected === true) {
+                    selected.push(tickers[i]);
                 }
             }
 
-            for (let key in divPercentOb) {
-                divPercent.push((divPercentOb[key][0].dividend * 100).toFixed(1));
-                divPercentLabel.push(divPercentOb[key][0].name);
-            }
+            let selectedKeysKeys = Object.keys(selectedKeys);
+            selectedKeysKeys = selectedKeysKeys.filter(element => selectedKeys[element].selected === true);
 
-            for (let key in payoutRatioOb) {
-                payoutRatio.push((payoutRatioOb[key][0].payoutRatio * 100).toFixed(0));
-                payoutRatioLabel.push(payoutRatioOb[key][0].name);
-            }
+            selectedKeys.forEach(element => { console.log(element) });
 
-            let employeeData = {
-                labels: employeesLabel,
-                datasets: [
-                    {
-                        data: employees,
-                        label: 'Employees',
-                        backgroundColor: 'rgba( 45, 69,113,1)',
-                        hoverBackgroundColor: [],
-                    }]
-            };
+            let selectedCharts = [];
 
-            let employeeRevData = {
-                labels: revenueLabel,
-                datasets: [
-                    {
-                        data: revenue,
-                        label: 'Revenue per Employee (Thousands)',
-                        backgroundColor: 'rgba( 45, 69,113,1)',
-                        hoverBackgroundColor: [],
-                    }]
-            };
+            if (selectedKeys) {
+                console.log(selected);
+                for (var o = 0; o < selectedKeysKeys.length; o++) {
+                    let selectedData = [];
+                    let selectedDataColors = [];
+                    let selectedDataBorders = [];
 
-            let employeeProData = {
-                labels: profitLabel,
-                datasets: [
-                    {
-                        data: profit,
-                        label: 'Profit per Employee (Thousands)',
-                        backgroundColor: 'rgba( 45, 69,113,1)',
-                        hoverBackgroundColor: [],
-                    }]
-            };
+                    for (var i = 0; i < selected.length; i++) {
+                        selectedData.push([divData[selected[i]].yearData[0][selectedKeysKeys[o]], selected[i]]);
+                    }
 
-            let marginData = {
-                labels: marginLabel,
-                datasets: [
-                    {
-                        data: margin,
-                        label: 'Profit Margin',
-                        backgroundColor: 'rgba( 45, 69,113,1)',
-                        hoverBackgroundColor: [],
-                    }]
-            };
+                    selectedData = selectedData.sort(function (a, b) {
+                        return a[0] - b[0];
+                    });
 
-            let cratioData = {
-                labels: cratioLabel,
-                datasets: [
-                    {
-                        data: cratio,
-                        label: 'Current Ratio',
-                        backgroundColor: 'rgba( 45, 69,113,1)',
-                        hoverBackgroundColor: [],
-                    }]
-            };
+                    let tickerLabel = selectedData.map(elem => elem[1]);
+                    selectedData = selectedData.map(elem => elem[0]);
+                    selectedData.forEach(elem => {
+                        selectedDataColors.push(elem >= 0 ? 'rgba(75, 192, 192, 0.6)' : 'rgba(255, 99, 132, 0.6)');
+                    })
 
-            let insiderData = {
-                labels: insiderLabel,
-                datasets: [
-                    {
-                        data: insider,
-                        label: 'Insider ownership',
-                        backgroundColor: 'rgba( 45, 69,113,1)',
-                        hoverBackgroundColor: [],
-                    }]
-            };
-
-            let divPercentData = {
-                labels: divPercentLabel,
-                datasets: [
-                    {
-                        data: divPercent,
-                        label: 'Dividend percent',
-                        backgroundColor: 'rgba( 45, 69,113,1)',
-                        hoverBackgroundColor: [],
-                    }]
-            };
-
-            let payoutRatioData = {
-                labels: payoutRatioLabel,
-                datasets: [
-                    {
-                        data: payoutRatio,
-                        label: 'Payout Ratio',
-                        backgroundColor: 'rgba( 45, 69,113,1)',
-                        hoverBackgroundColor: [],
-                    }]
-            };
-
-            let employeeDataOptions = {
-                maintainAspectRatio: false,
-                responsive: false,
-                plugins: {
-                    datalabels: {
-                        display: false,
-                        color: 'black',
-                        align: 'end',
-                        anchor: 'end',
+                    data = {
+                        labels: tickerLabel,
+                        datasets: [
+                            {
+                                label: selectedKeysKeys[o],
+                                data: selectedData,
+                                backgroundColor: selectedDataColors,
+                                borderWidth: 2,
+                            }
+                        ]
+                    }
+                    selectedCharts.push(data);
+                }
+                console.log(selectedCharts);
+                options = {
+                    plugins: {
+                        datalabels: {
+                            display: false,
+                        },
                     },
-                },
+                }
             }
-
-            let employeeRevDataOptions = {
-                maintainAspectRatio: false,
-                responsive: false,
-                plugins: {
-                    datalabels: {
-                        display: false,
-                        color: 'black',
-                        align: 'end',
-                        anchor: 'end',
-                    },
-                },
-            }
-
-            let employeeProDataOptions = {
-                maintainAspectRatio: false,
-                responsive: false,
-                plugins: {
-                    datalabels: {
-                        display: false,
-                        color: 'black',
-                        align: 'end',
-                        anchor: 'end',
-                    },
-                },
-            }
-
-            let marginDataOptions = {
-                maintainAspectRatio: false,
-                responsive: false,
-                plugins: {
-                    datalabels: {
-                        display: true,
-                        color: 'black',
-                        align: 'end',
-                        anchor: 'end',
-                        formatter: (value, ctx) => {
-                            return value + '%';
-                        }
-                    },
-                },
-            }
-
-            let cratioDataOptions = {
-                maintainAspectRatio: false,
-                responsive: false,
-                plugins: {
-                    datalabels: {
-                        display: true,
-                        color: 'black',
-                        align: 'end',
-                        anchor: 'end',
-
-                    },
-                },
-            }
-
-            let insiderDataOptions = {
-                maintainAspectRatio: false,
-                responsive: false,
-                plugins: {
-                    datalabels: {
-                        display: true,
-                        color: 'black',
-                        align: 'end',
-                        anchor: 'end',
-                        formatter: (value, ctx) => {
-                            return value + '%';
-                        }
-                    },
-                },
-            }
-
-            let divPercentDataOptions = {
-                maintainAspectRatio: false,
-                responsive: false,
-                plugins: {
-                    datalabels: {
-                        display: true,
-                        color: 'black',
-                        align: 'end',
-                        anchor: 'end',
-                        formatter: (value, ctx) => {
-                            return value + '%';
-                        }
-                    },
-                },
-            }
-
-            let payoutRatioDataOptions = {
-                maintainAspectRatio: false,
-                responsive: false,
-                plugins: {
-                    datalabels: {
-                        display: true,
-                        color: 'black',
-                        align: 'end',
-                        anchor: 'end',
-                        formatter: (value, ctx) => {
-                            return value + '%';
-                        }
-                    },
-                },
-            }
-
             return {
-                employeeData: employeeData,
-                employeeDataOptions: employeeDataOptions,
-                employeeRevData: employeeRevData,
-                employeeRevDataOptions: employeeRevDataOptions,
-                employeeProData: employeeProData,
-                employeeProDataOptions: employeeProDataOptions,
-                marginData: marginData,
-                marginDataOptions: marginDataOptions,
-                cratioData: cratioData,
-                cratioDataOptions: cratioDataOptions,
-                insiderData: insiderData,
-                insiderDataOptions: insiderDataOptions,
-                divPercentData: divPercentData,
-                divPercentDataOptions: divPercentDataOptions,
-                payoutRatioData: payoutRatioData,
-                payoutRatioDataOptions: payoutRatioDataOptions
+                cratioData: data,
+                chartOptions: options,
+                financialKeys: keys,
+                selectedKeys: selectedKeys,
+                selectedCharts: selectedCharts,
+                activeTickers: tickers,
+                sectors: sectors
             }
-
-
-            // return {
-            //     selectedCompany: props.selectedCompany,
-            //     header: props.selectedCompany.tickerData
-            // }
         }
         return false
     }
 
+    shouldComponentUpdate(nextProps, nextState) {
+        if (nextProps.state !== 'none') {
+            return true;
+        }
+        return false;
+    }
+
+    setKeyColor(key) {
+        if (this.state.selectedKeys[key].selected) {
+            return "rgba(156, 56, 56, 0.753)";
+        }
+        return "";
+    }
+
+    setTickerColor(ticker) {
+        if (this.state.selectedTickers[ticker].selected === true) {
+            return "rgba(156, 56, 56, 0.753)";
+        }
+        return "";
+    }
+
+    setSectorColor(sector) {
+        if (this.state.selectedSector === sector) {
+            return "rgba(156, 56, 56, 0.753)";
+        }
+        return "";
+    }
+
+    selectTicker(ticker) {
+        let selectedTickers = this.state.selectedTickers;
+        selectedTickers[ticker].selected === true ? selectedTickers[ticker].selected = false : selectedTickers[ticker].selected = true;
+        this.setState({ selectedTickers: selectedTickers, selectedSector: null })
+    }
+
+    selectAllTickers(ticker) {
+        let selectedTickers = this.state.selectedTickers;
+        let tickers = Object.keys(selectedTickers);
+        tickers.forEach(element => {
+            selectedTickers[element] = {
+                ticker: element,
+                selected: true
+            }
+        });
+
+        this.setState({ selectedTickers: selectedTickers, selectedSector: null })
+    }
+
+    selectSector(sector) {
+        this.setState({ selectedSector: sector })
+    }
+
+    selectRatio(key) {
+        let selectedKeys = this.state.selectedKeys;
+        selectedKeys[key].selected === true ? selectedKeys[key].selected = false : selectedKeys[key].selected = true;
+        this.setState({ selectedKey: key, selectedKeys: selectedKeys })
+    }
+
     render() {
         return (
-            <div id='comparePort' className='comparisonContainer'>
+            <div className='comparisonContainer'>
                 <button className="closeComparison" onClick={this.props.closeComparison}>Back</button>
-                <div id='compareCharts'>
-                    <div className='compareChart'>
-                        {<Bar
-                            data={this.state.employeeData}
-                            width={50}
-                            height={39}
-                            options={this.state.employeeDataOptions}
-                            datasetKeyProvider={this.datasetKeyProvider}
-                        />}
-                    </div>
-                    <div className='compareChart'>
-                        {<Bar
-                            data={this.state.marginData}
-                            width={50}
-                            height={39}
-                            options={this.state.marginDataOptions}
-                            datasetKeyProvider={this.datasetKeyProvider}
-                        />}
-                    </div>
-                    <div className='compareChart'>
-                        {<Bar
-                            data={this.state.divPercentData}
-                            width={50}
-                            height={39}
-                            options={this.state.divPercentDataOptions}
-                            datasetKeyProvider={this.datasetKeyProvider}
-                        />}
-                    </div>
-                    <div className='compareChart'>
-                        {<Bar
-                            data={this.state.employeeRevData}
-                            width={50}
-                            height={39}
-                            options={this.state.employeeRevDataOptions}
-                            datasetKeyProvider={this.datasetKeyProvider}
-                        />}
-                    </div>
-                    <div className='compareChart'>
-                        {<Bar
-                            data={this.state.cratioData}
-                            width={50}
-                            height={39}
-                            options={this.state.cratioDataOptions}
-                            datasetKeyProvider={this.datasetKeyProvider}
-                        />}
-                    </div>
-                    <div className='compareChart'>
-                        {<Bar
-                            data={this.state.payoutRatioData}
-                            width={50}
-                            height={39}
-                            options={this.state.payoutRatioDataOptions}
-                            datasetKeyProvider={this.datasetKeyProvider}
-                        />}
-                    </div>
-                    <div className='compareChart'>
-                        {<Bar
-                            data={this.state.employeeProData}
-                            width={50}
-                            height={39}
-                            options={this.state.employeeProDataOptions}
-                            datasetKeyProvider={this.datasetKeyProvider}
-                        />}
-                    </div>
-                    <div className='compareChart'>
-                        {<Bar
-                            data={this.state.insiderData}
-                            width={50}
-                            height={39}
-                            options={this.state.insiderDataOptions}
-                            datasetKeyProvider={this.datasetKeyProvider}
-                        />}
-                    </div>
 
+                <div id='pcOptions'>
+                    <div className='pcTickers'>
+                        <button className='fcButton pcAllButton' onClick={this.selectAllTickers.bind(this, 'All')}>Select All</button>
+                        {this.state.activeTickers.map((ticker, index) =>
+                            <button key={index} style={{ background: this.setTickerColor(ticker) }} className='fcButton' onClick={this.selectTicker.bind(this, ticker)}>{ticker}</button>
+                        )}
+                    </div>
+                    <div className='pcSectors'>
+                        {this.state.sectors.map((ticker, index) =>
+                            <button
+                                key={index}
+                                style={{ background: this.setSectorColor(ticker) }}
+                                className='sectorButton'
+                                onClick={this.selectSector.bind(this, ticker)}
+                            >
+                                {ticker}
+                            </button>
+                        )}
+                    </div>
+                    <div className='pcKeys'>
+                        <h3 className='fcKeysHeader'>Financial Keys</h3>
+                        {this.state.financialKeys.map((key, index) =>
+                            <button key={index} style={{ background: this.setKeyColor(key) }} onClick={this.selectRatio.bind(this, key)} className='fcKeyButton'>{key.slice(0, 14)}</button>
+                        )}
+                    </div>
                 </div>
+                <div id='pcChartSection'>
+                    <div id='compareCharts'>
+                        {this.state.selectedCharts.map(element =>
+                            <div className='portfolioComparisonChart'>
+                                <Bar
+                                    data={element}
+                                    width={100}
+                                    height={40}
+                                    options={this.state.chartOptions}
+                                />
+                            </div>
+                        )}
+                    </div>
+                    <div id='portfolioResults'>
+                        <PortfolioResults data={this.state.selectedCharts} />
+                    </div>
+                </div>
+
+
             </div>
+
         )
     }
 }
 
 export default PortfolioComparison
+

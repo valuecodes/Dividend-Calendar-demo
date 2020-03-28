@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Month } from './month';
 import { MonthStack } from './monthStack'
+import { Spring } from 'react-spring/renderprops';
 
 export class Calender extends Component {
     constructor() {
@@ -10,8 +11,49 @@ export class Calender extends Component {
             monthId: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
             monthStack: [],
             sum: [],
-            current: []
+            current: [],
+            display: ['', '', '', '', '', '', '', '', '', '', '', ''],
+            monthView: false,
+            weekDays: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+            monthStart: [3, 6, 0, 3, 5, 1, 3, 6, 2, 4, 0, 2],
+            monthDays: [[]],
+            startDays: [[]],
+            endBlocks: [[]],
+            currentMonth: 0
         };
+    }
+
+    componentDidMount() {
+        let mdays = [31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+        let start = [3, 6, 0, 3, 5, 1, 3, 6, 2, 4, 0, 2];
+        let end = [9, 8, 11, 10, 7, 12, 9, 6, 11, 8, 12, 10];
+        let days = [];
+        let sdays = [];
+        let eblock = [];
+
+        console.log(mdays);
+        for (var i = 0; i < 12; i++) {
+            let m = [];
+            for (var a = 1; a <= mdays[i]; a++) {
+                m.push(a);
+            }
+            days.push(m);
+
+            let st = [];
+            for (var x = 0; x <= start[i]; x++) {
+                st.push(x);
+            }
+            sdays.push(st);
+
+            let eb = [];
+            for (var q = 0; q <= end[i]; q++) {
+                eb.push(q);
+            }
+            eblock.push(eb);
+        }
+
+        console.log(eblock);
+        this.setState({ monthDays: days, startDays: sdays, endBlocks: eblock });
     }
 
     static getDerivedStateFromProps(props, state) {
@@ -70,17 +112,86 @@ export class Calender extends Component {
         return null;
     }
 
+    monthView(month) {
+        let state = this.state.display
+        for (let i = 0; i < 12; i++) {
+            if (i === month || month === 13) {
+                state[i] = '';
+            } else {
+                state[i] = 'none';
+            }
+        }
+        this.setState({
+            display: state,
+            currentMonth: month === 13 ? 1 : month,
+            monthView: month === 13 ? false : month
+        });
+    }
+
+    shouldComponentUpdate(nextProps, nextState) {
+        if (nextProps.currentportfolio !== this.props.currentportfolio || nextState.currentMonth !== this.state.currentMonth) {
+
+            return true;
+        }
+        return false;
+    }
     render() {
         return (
             <div className='calender' onChange={this.test}>
                 <div className='monthStack'>
-                    {this.state.monthId.map(monthId =>
-                        <MonthStack key={monthId} id={monthId} monthStack={this.state.monthStack[monthId]} />
+                    {this.state.monthId.map((monthId, index) =>
+                        <MonthStack style={this.state.display[index]} key={monthId} id={monthId} monthStack={this.state.monthStack[monthId]} monthView={this.state.monthView} startDay={this.state.startDays[this.state.currentMonth]} currentMonth={this.state.currentMonth} />
                     )}
                 </div>
+                <Spring
+                    from={{
+                        opacity: this.state.monthView === false ? 1 : 0,
+                        display: this.state.monthView === false ? 'none' : ''
+                    }}
+                    to={{
+                        opacity: this.state.monthView === false ? 0 : 1,
+                        display: this.state.monthView === false ? 'none' : ''
+                    }}
+                    config={{ duration: this.state.monthView === false ? 0 : 0 }}
+                    key={this.state.monthView}
+                >
+                    {props => (
+                        <div style={props} id='monthCalender'>
+                            {this.state.weekDays.map(day =>
+                                <div className='dayBlock'>
+                                    <p className='dayBlockHeader'>{day}</p>
+                                </div>
+                            )}
+
+                            {this.state.startDays[this.state.currentMonth].map((day, index) => {
+                                if (index > 1) {
+                                    return <div className='fillBlockTop'>
+                                        {/* <p className='dayBlockHeader'>{day}</p> */}
+                                    </div>
+                                }
+                            }
+                            )}
+                            {this.state.monthDays[this.state.currentMonth].map(day =>
+                                <div className='dayBlock'>
+                                    <p id={'day.' + day}>{day}</p>
+                                </div>
+                            )}
+
+                            {this.state.endBlocks[this.state.currentMonth].map((day, index) => {
+                                if (index >= 1) {
+                                    return <div className='fillBlockBottom'>
+                                        {/* <p className='fillBlockBottom'></p> */}
+                                    </div>
+                                }
+                            }
+                            )}
+                        </div>
+                    )}
+
+                </Spring>
                 <div className='monthNames'>
-                    {this.state.monthsName.map(month =>
-                        <Month key={month} month={month} />
+                    {this.state.monthsName.map((month, index) =>
+                        <Month key={index} index={index} month={month} monthView={this.monthView.bind(this)} />
                     )}
                 </div>
             </ div >
