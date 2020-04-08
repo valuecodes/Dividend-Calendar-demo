@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
-import { Bar, Line } from 'react-chartjs-2';
+import { Bar } from 'react-chartjs-2';
 import 'chartjs-plugin-datalabels';
-import portfolioResults, { PortfolioResults } from './portfolioResults'
+import { PortfolioResults } from './portfolioResults'
 
 export class PortfolioComparison extends Component {
     constructor() {
@@ -42,7 +42,40 @@ export class PortfolioComparison extends Component {
             let keys = state.financialKeys;
             if (Object.keys(keys).length === 0) {
                 let financialKeys = Object.keys(props.portfolio.dividendData[tickers[0]].yearData[0]);
-                keys = financialKeys.slice(1, 98);
+                keys = financialKeys.slice(1, 98).reverse();
+                keys = [
+                    "Revenue",
+                    "NetIncome",
+
+                    "GrossMargin",
+                    "OperatingMargin",
+                    "NetProfitMargin",
+                    "ROEReturnOnEquity",
+                    "ROAReturnOnAssets",
+
+                    "CurrentRatio",
+                    "TotalCurrentAssets",
+                    "TotalLongTermAssets",
+
+                    "NetCurrentDebt",
+                    "TotalCurrentLiabilities",
+                    "TotalLiabilities",
+                    "BookValuePerShare",
+
+                    "CashFlowFromInvestingActivities",
+                    "CashFlowFromOperatingActivities",
+                    "NetCashFlow",
+
+                    "Price/Earnings",
+                    "Price/Book",
+                    "Dividend Yield (%)",
+                    "Payout Ratio (%)",
+
+                    "Employees",
+                    "Revenue per Employee(In millions)",
+                    "Profit per Employee(In millions)",
+                    "InsiderStake (%)",
+                ]
             }
 
             let data = {};
@@ -61,49 +94,121 @@ export class PortfolioComparison extends Component {
 
             let sectors = tickers.map(elem => props.portfolio.dividendData[elem].tickerData.sector);
 
+            // let employees = tickers.map(elem => [props.portfolio.dividendData[elem].tickerData.employees, elem]);
+
             sectors = [...new Set(sectors)];
             let selectedSector = state.selectedSector;
 
             if (state.selectedSector) {
 
                 let secTickers = tickers.filter(elem => props.portfolio.dividendData[elem].tickerData.sector === selectedSector);
-                for (var i = 0; i < tickers.length; i++) {
-                    if (secTickers.includes(tickers[i])) {
-                        selectedTickers[tickers[i]].selected = true
+                for (var e = 0; e < tickers.length; e++) {
+                    if (secTickers.includes(tickers[e])) {
+                        selectedTickers[tickers[e]].selected = true
                     } else {
-                        selectedTickers[tickers[i]].selected = false
+                        selectedTickers[tickers[e]].selected = false
                     }
                 }
             }
 
             let selected = [];
 
-            for (var i = 0; i < tickers.length; i++) {
-                if (selectedTickers[tickers[i]].selected === true) {
-                    selected.push(tickers[i]);
+            for (var w = 0; w < tickers.length; w++) {
+                if (selectedTickers[tickers[w]].selected === true) {
+                    selected.push(tickers[w]);
                 }
             }
 
             let selectedKeysKeys = Object.keys(selectedKeys);
             selectedKeysKeys = selectedKeysKeys.filter(element => selectedKeys[element].selected === true);
 
-            selectedKeys.forEach(element => { console.log(element) });
+            // selectedKeys.forEach(element => { console.log(element) });
 
             let selectedCharts = [];
 
             if (selectedKeys) {
-                console.log(selected);
                 for (var o = 0; o < selectedKeysKeys.length; o++) {
                     let selectedData = [];
                     let selectedDataColors = [];
-                    let selectedDataBorders = [];
-
                     for (var i = 0; i < selected.length; i++) {
-                        selectedData.push([divData[selected[i]].yearData[0][selectedKeysKeys[o]], selected[i]]);
+
+                        switch (selectedKeysKeys[o]) {
+                            case 'Employees':
+                                selectedData = selected.map(elem => [props.portfolio.dividendData[elem].tickerData.employees === null ? 0 : props.portfolio.dividendData[elem].tickerData.employees, elem]);
+                                break;
+                            case 'InsiderStake (%)':
+                                selectedData = selected.map(elem => [props.portfolio.dividendData[elem].tickerData.insiderStake === null ? 0 : props.portfolio.dividendData[elem].tickerData.insiderStake, elem]);
+                                break;
+                            case 'Price/Earnings':
+                                selectedData = selected.map(elem => [
+                                    Number((props.portfolio.dividendData[elem].weeklyData[0].close / props.portfolio.dividendData[elem].yearData[0].EPSEarningsPerShare).toFixed(2)),
+                                    elem
+                                ]);
+                                break;
+                            case 'Price/Book':
+                                selectedData = selected.map(elem => [
+                                    (props.portfolio.dividendData[elem].weeklyData[0].close / props.portfolio.dividendData[elem].yearData[0].BookValuePerShare).toFixed(2),
+                                    elem
+                                ]);
+                                break;
+                            case 'Dividend Yield (%)':
+                                selectedData = selected.map(elem => [
+                                    ((props.portfolio.dividendData[elem].dividendData.reduce((acc, elem) => {
+                                        if (elem.year === 2019) {
+                                            return acc + elem.dividend
+                                        }
+                                        else {
+                                            return acc;
+                                        }
+                                    }, 0) / props.portfolio.dividendData[elem].weeklyData[0].close) * 100).toFixed(2),
+                                    elem
+                                ]);
+                                break;
+                            case 'Payout Ratio (%)':
+                                selectedData = selected.map(elem => [
+                                    ((props.portfolio.dividendData[elem].dividendData.reduce((acc, elem) => {
+                                        if (elem.year === 2019) {
+                                            return acc + elem.dividend
+                                        }
+                                        else {
+                                            return acc;
+                                        }
+                                    }, 0) / props.portfolio.dividendData[elem].yearData[0].EPSEarningsPerShare) * 100).toFixed(2),
+                                    elem
+                                ]);
+                                break;
+                            case 'Revenue per Employee(In millions)':
+                                selectedData = selected.map(
+                                    elem => [(props.portfolio.dividendData[elem].yearData[0].Revenue / (props.portfolio.dividendData[elem].tickerData.employees === null ? 0 : props.portfolio.dividendData[elem].tickerData.employees)).toFixed(2), elem]);
+                                break;
+                            case 'Profit per Employee(In millions)':
+                                selectedData = selected.map(
+                                    elem => [(props.portfolio.dividendData[elem].yearData[0].NetIncome / (props.portfolio.dividendData[elem].tickerData.employees === null ? 0 : props.portfolio.dividendData[elem].tickerData.employees)).toFixed(2), elem]);
+                                break;
+                            default:
+                                selectedData.push([divData[selected[i]].yearData[0][selectedKeysKeys[o]], selected[i]]);
+                        }
                     }
+                    console.log(selectedData)
+                    let sortDir = [
+                        "TotalCurrentLiabilities",
+                        "TotalLiabilities",
+
+                        "CashFlowFromInvestingActivities",
+
+                        "Price/Earnings",
+                        "Price/Book",
+                        "Payout Ratio",
+                    ].includes(selectedKeysKeys[o])
+                    console.log(sortDir, selectedKeysKeys[o]);
 
                     selectedData = selectedData.sort(function (a, b) {
-                        return a[0] - b[0];
+                        if (sortDir) {
+                            return b[0] - a[0];
+                        } else {
+                            return a[0] - b[0];
+                        }
+
                     });
 
                     let tickerLabel = selectedData.map(elem => elem[1]);
@@ -131,6 +236,23 @@ export class PortfolioComparison extends Component {
                         datalabels: {
                             display: false,
                         },
+                    },
+                    scales: {
+                        yAxes: [{
+
+                            ticks: {
+                                beginAtZero: true,
+                                // fontSize: 20,
+                            }
+                        }],
+                        xAxes: [{
+
+                            ticks: {
+                                beginAtZero: true,
+
+                                // fontSize: 20,
+                            }
+                        }]
                     },
                 }
             }
@@ -237,8 +359,8 @@ export class PortfolioComparison extends Component {
                 </div>
                 <div id='pcChartSection'>
                     <div id='compareCharts'>
-                        {this.state.selectedCharts.map(element =>
-                            <div className='portfolioComparisonChart'>
+                        {this.state.selectedCharts.map((element, index) =>
+                            <div key={index} className='portfolioComparisonChart'>
                                 <Bar
                                     data={element}
                                     width={100}

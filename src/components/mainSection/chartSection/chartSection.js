@@ -3,7 +3,6 @@ import { PortFolioStats } from './portfolioStats';
 import { MainChart } from './mainChart';
 import { StatChart } from './statChart';
 import { PortfolioRecap } from './portfolioRecap';
-import { Spring } from 'react-spring/renderprops';
 
 export class ChartSection extends Component {
 
@@ -29,8 +28,8 @@ export class ChartSection extends Component {
         }
         let monthsName = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
         let months = [];
-        for (var i = 0; i < 12; i++) {
-            months[i] = new month(i, monthsName[i], 0);
+        for (var x = 0; x < 12; x++) {
+            months[x] = new month(x, monthsName[x], 0);
         }
         this.setState({ monthSum: months })
     }

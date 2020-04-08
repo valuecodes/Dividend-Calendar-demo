@@ -16,7 +16,10 @@ export class Month extends Component {
     render() {
         return (
             <div className='monthBlock'>
-                <p onMouseEnter={() => this.props.monthView(this.props.index)} onMouseLeave={() => this.props.monthView(13)} className='months'>{this.props.month}</p>
+                <p
+                    // onMouseEnter={() => this.props.monthView(this.props.index)} 
+                    // onMouseLeave={() => this.props.monthView(13)} 
+                    className='months'>{this.props.month}</p>
             </div>
         )
     }

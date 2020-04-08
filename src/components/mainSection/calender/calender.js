@@ -31,7 +31,6 @@ export class Calender extends Component {
         let sdays = [];
         let eblock = [];
 
-        console.log(mdays);
         for (var i = 0; i < 12; i++) {
             let m = [];
             for (var a = 1; a <= mdays[i]; a++) {
@@ -51,8 +50,6 @@ export class Calender extends Component {
             }
             eblock.push(eb);
         }
-
-        console.log(eblock);
         this.setState({ monthDays: days, startDays: sdays, endBlocks: eblock });
     }
 
@@ -157,33 +154,16 @@ export class Calender extends Component {
                 >
                     {props => (
                         <div style={props} id='monthCalender'>
-                            {this.state.weekDays.map(day =>
-                                <div className='dayBlock'>
+                            {this.state.weekDays.map((day, index) =>
+                                <div key={index} className='dayBlock'>
                                     <p className='dayBlockHeader'>{day}</p>
                                 </div>
                             )}
 
-                            {this.state.startDays[this.state.currentMonth].map((day, index) => {
-                                if (index > 1) {
-                                    return <div className='fillBlockTop'>
-                                        {/* <p className='dayBlockHeader'>{day}</p> */}
-                                    </div>
-                                }
-                            }
-                            )}
-                            {this.state.monthDays[this.state.currentMonth].map(day =>
-                                <div className='dayBlock'>
+                            {this.state.monthDays[this.state.currentMonth].map((day, index) =>
+                                <div key={index} className='dayBlock'>
                                     <p id={'day.' + day}>{day}</p>
                                 </div>
-                            )}
-
-                            {this.state.endBlocks[this.state.currentMonth].map((day, index) => {
-                                if (index >= 1) {
-                                    return <div className='fillBlockBottom'>
-                                        {/* <p className='fillBlockBottom'></p> */}
-                                    </div>
-                                }
-                            }
                             )}
                         </div>
                     )}

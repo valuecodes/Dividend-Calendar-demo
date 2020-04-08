@@ -61,11 +61,11 @@ export class StatChart extends Component {
 
             let countries = {};
 
-            for (var a = 0; a < stake.length; a++) {
-                if (countries[divData[stakeLabel[a]].tickerData.countryName]) {
-                    countries[divData[stakeLabel[a]].tickerData.countryName] += stake[a];
+            for (var q = 0; q < stake.length; q++) {
+                if (countries[divData[stakeLabel[q]].tickerData.countryName]) {
+                    countries[divData[stakeLabel[q]].tickerData.countryName] += stake[q];
                 } else {
-                    countries[divData[stakeLabel[a]].tickerData.countryName] = stake[a];
+                    countries[divData[stakeLabel[q]].tickerData.countryName] = stake[q];
                 }
             }
             for (let key in countries) {
@@ -74,15 +74,15 @@ export class StatChart extends Component {
             }
 
             let tickerS = [];
-            for (var a = 0; a < stake.length; a++) {
-                if (stake[a] / total < 0.05) {
-                    stakeLabel[a] = 'Other';
+            for (var z = 0; z < stake.length; z++) {
+                if (stake[z] / total < 0.05) {
+                    stakeLabel[z] = 'Other';
 
                 }
-                if (tickerS[stakeLabel[a]]) {
-                    tickerStake[stakeLabel[a]] += stake[a];
+                if (tickerS[stakeLabel[z]]) {
+                    tickerStake[stakeLabel[z]] += stake[z];
                 } else {
-                    tickerS[stakeLabel[a]] = stake[a];
+                    tickerS[stakeLabel[z]] = stake[z];
                 }
             }
 

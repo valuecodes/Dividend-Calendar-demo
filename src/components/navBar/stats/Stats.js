@@ -51,7 +51,6 @@ export class Stats extends Component {
             let totalSum = 0;
 
             let d = new Date();
-            let year = d.getFullYear();
             let month = d.getMonth() + 1;
             let day = d.getDate();
             let match = null;
@@ -59,7 +58,6 @@ export class Stats extends Component {
             for (var i = 0; i < 12; i++) {
                 for (var a = 0; a < dividends[i].data.length; a++) {
                     let dMonth = dividends[i].data[a].month;
-                    let dDay = dividends[i].data[a].day;
                     if (dMonth >= month && match === null) {
                         match = dividends[i].data.filter(element =>
                             element.day >= day || dMonth !== month

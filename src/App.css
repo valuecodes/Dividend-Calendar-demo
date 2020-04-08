@@ -3,10 +3,205 @@
   font-family: Arial, Helvetica, sans-serif;
 }
 
+#headerContainer{
+  display: grid;
+  grid-template-columns: 1fr 320px 1fr;
+}
+
 /* Header */
 #mainHeader{
   text-align: center;
   margin: 10px;
+}
+
+/* Currencies */
+#currencyContainer{
+  height: 40px;
+  width: 650px;
+  display: grid;
+  grid-template-columns:repeat(3,160px) 1fr;
+  grid-gap: 5px;
+}
+
+.currencyBox{
+  height: 40px;
+  display: grid;
+  grid-template-rows: repeat(2,1fr);
+  grid-template-columns: 70px 1fr;
+  background-color: #85858541;
+}
+.currencyChange{
+  padding-top: 8px;
+  margin: 0px;
+  font-size: 22px;
+  grid-row-start: 1;
+  grid-row-end: 5;
+  grid-column-start: 2;
+  grid-column-end: 3;
+  height: 1fr;
+}
+
+
+
+#scrollCurrency{
+  display: grid;
+  grid-template-columns: 25px 100px 25px;
+  height: 25px;
+  padding-top: 4px;
+  padding-left: 5px;
+}
+
+#selectedCurrencyTimeFrame{
+  margin: 0px;
+  padding-top: 3px;
+  text-align: center;
+}
+
+.cHeader{
+  padding: 0px;
+  margin: 0px;
+  font-size: 15px;
+  text-align: center;
+  font-weight: bolder;
+}
+
+#sectorContainer{
+  /* padding-left: 10px; */
+  margin-top: -6px;
+  height: 40px;
+  width: 100%;
+  display: grid;
+  grid-template-rows: 25px 15px;
+}
+
+#sectorHeaders{
+  display: grid;
+  grid-template-columns: 230px 150px 1fr;
+}
+
+#selectedSectorTimeFrame{
+  padding: 0px;
+  margin:0px;
+  font-size: 15px;
+  text-align: center;
+  padding-top: 3px;
+}
+
+#sectorRefreshed{
+  height: 17px;
+  width: 200px;
+  font-size: 12px;
+  padding-top: 4px;
+  background-color: rgba(76, 175, 79, 0.349);
+  background-color: rgba(116, 122, 118, 0.349);
+  text-align: center;
+  border-radius: 5px;
+  margin-left: auto;
+  margin-right: 40px;
+}
+
+#scrollSectors{
+  display: grid;
+  grid-template-columns: 25px 80px 25px;
+}
+
+.scrollSectorBox{
+  background-color: #85858554;
+  border-radius: 50%;
+  padding-top: 1px;
+  /* padding-left: 5px; */
+}
+
+.sLeft:hover{
+  background-color: rgb(76, 116, 175);
+  cursor: pointer;
+}
+
+.sRight:hover{
+  background-color: rgb(76, 116, 175);
+  cursor: pointer;
+}
+
+.sLeft{
+  padding-left: 5px;
+}
+.sRight{
+  padding-right: 5px;
+}
+
+.scrollSectorButton{
+  padding: 0px;
+  margin: 0px;
+  border: solid black;
+  border-width: 0 3px 3px 0;
+  height: 11px;
+  width: 11px;
+  margin: auto;
+  margin-top: 4px;
+  /* background-color: #798a6557; */
+  /* border-radius: 5px; */
+}
+
+.right {
+  transform: rotate(-45deg);
+  -webkit-transform: rotate(-45deg);
+}
+
+.left {
+  transform: rotate(135deg);
+  -webkit-transform: rotate(135deg);
+}
+
+.sectorHeader{
+  padding: 0px;
+  margin: 0px;
+  height: 1fr;
+}
+
+#selectedSectorTime{
+  display: grid;
+  grid-template-columns: repeat(3,1fr);
+  width: 200px;
+  height: 20px;
+  margin-left: 10px;
+  text-align: center;
+}
+
+.sectorTimeHeader{
+  padding-top: 2px;
+  margin: 0px;
+  font-size: 13px;
+  text-align: center;
+  background-color: rgb(247, 247, 247);
+}
+.sectorTimeHeader:hover{
+  /* color: white; */
+  cursor: pointer;
+}
+
+#sectorPerformance{
+  width: 95%;
+  display: grid;
+  grid-template-columns: repeat(11,1fr);
+  grid-gap: 4px;
+  /* padding-top: 5px; */
+}
+
+.sectorBox{
+  display: grid;
+  grid-template-rows: 21px 1fr;
+}
+
+.sectorComp{
+  padding: 0px;
+  margin: 0px;
+  font-size: 10px;
+}
+
+.sectorPercentage{
+  text-align: right;
+  font-size: 12px;
+  font-weight: bold;
 }
 
 /* Navigation bar */
@@ -308,13 +503,24 @@
 .monthStack{
   display: grid;
   grid-template-columns: repeat(12,1fr);
+  overflow: hidden;
 }
 
 .monthColumn{
   display: grid;
   grid-template-rows: 1fr;
+  overflow: scroll;
+  overflow-x: hidden;
 }
 
+::-webkit-scrollbar {
+  width: 0px;  /* Remove scrollbar space */
+  background: transparent;  /* Optional: just make scrollbar invisible */
+}
+/* Optional: show position indicator in red */
+::-webkit-scrollbar-thumb {
+  background: #FF0000;
+}
 
 /* Calender month */
 .calenderDivs{
@@ -470,7 +676,7 @@
 #portfolioResults{
   /* background-color: rgba(105, 140, 170, 0.445); */
   height:562px;
-  /* width: 1fr; */
+  /* padding-left: 20px; */
   border-left: 10px solid rgb(50, 72, 119);
   background-color: rgb(204, 213, 233);
 }
