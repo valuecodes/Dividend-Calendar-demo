@@ -7,7 +7,7 @@ export class Header extends Component {
         return (
             <div id='headerContainer'>
                 <Currencies />
-                <h1 id='mainHeader'>Dividend calender</h1>
+                <h1 id='mainHeader'>Dividend calendar</h1>
                 <Sectors />
             </div>
         )
